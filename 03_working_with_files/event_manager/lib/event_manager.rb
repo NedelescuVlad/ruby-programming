@@ -66,10 +66,12 @@ def open_erb_template
 end
 
 def generate_thank_you_letters
+	puts "Generating thank you letters for our attendees"
 	
 	erb_template = open_erb_template
 
-	open_csv_file.each do |row| 
+	open_csv_file.each do |row|
+	       	puts "..."	
 		# legislators required for erb template reference
 		a_zipcode = clean_zipcode(row[:zipcode])	
 		legislators_of_attendee = legislators_by_zipcode(a_zipcode)	
@@ -81,10 +83,11 @@ def generate_thank_you_letters
 		a_id = row[0]
 		save_thank_you_letter(a_id, thank_you_letter)
 	end
+	puts "Thank you letters done!"
 end
 
 def generate_contact_details
-
+	puts "Generating contact details for our attendees"
 	open_csv_file.each do |row|
 		a_id = row[0]
 		a_name = row[:first_name] 
@@ -93,6 +96,7 @@ def generate_contact_details
 
 		save_contact_details(a_id, a_name, a_clean_phone_number)
 	end
+	puts "Contact details succesfully generated!"
 end
 
 # DO NOT USE THIS METHOD WHEN THE DATE REPRESENTATION STRING IS NOT OF THE FOLLOWING PATTERN:
@@ -154,8 +158,8 @@ def find_week_day_with_most_registrations
 	Date::DAYNAMES[day_as_integer]
 end
 puts "Event Manager intialized!"
-puts "Best hour for advertising is: " + find_best_hour_for_advertising
+generate_thank_you_letters
+generate_contact_details
+puts "Check out the 'output' folder! ;)" 
 puts "The day most people tend to register is: #{find_week_day_with_most_registrations}" 
-# generate_contact_details
-# generate_thank_you_letters
-
+puts "Best hour for advertising is: " + find_best_hour_for_advertising
