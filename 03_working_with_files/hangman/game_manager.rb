@@ -33,8 +33,8 @@ class GameManager
 	end
 
 	private def display_game_instructions
-		puts "[NOTE] Write '#{SAVE_COMMAND}' at any time to abort the game and save your progress"
-		puts "[NOTE] Your saves can be found in the '#{SavesManager::SAVES_DIR}' directory under the root of this program"
+		puts "\n[NOTE] Write '#{SAVE_COMMAND}' at any time to abort the game and save your progress"
+		puts "[NOTE] Your saves can be found in the '#{SavesManager::SAVES_DIR}' directory under the root of this program\n\n"
 	end
 
 	private def process_save_command

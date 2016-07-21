@@ -19,8 +19,8 @@ class Hangman
 				puts winning_message
 				exit()
 			else
-				puts "Oh! you've tried guessing the whole word."
-				puts "...but #{user_input} is not the droid we are looking for."
+				puts "Oh! You've tried guessing the whole word!"
+				puts "...but '#{user_input}' is not the droid we are looking for."
 				abort(losing_message)
 			end
 
@@ -65,7 +65,7 @@ class Hangman
 	end
 
 	def losing_message
-		"Game over! Please play again!"
+		"The chair you stand on is pushed aside. You start choking just as it slams the ground."
 	end
 
 	private def select_word_from_file

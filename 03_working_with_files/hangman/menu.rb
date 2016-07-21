@@ -27,18 +27,11 @@ class GameMenu
 	end
 
 	private def get_hangman_from_user_choice(user_choice)
-		hangman = nil
 
 		if user_choice == OPTION[:NEW_GAME]
 			hangman = Hangman.new
 		elsif user_choice == OPTION[:LOAD_GAME]
-			puts "Please write the name of your saved game"	
-			loop do
-				saved_game_name = gets.chomp
-				hangman = SavesManager.load_game(saved_game_name)
-				break if hangman != nil
-				puts "Save not found! Please try again."
-			end 
+			hangman = process_load_request
 		else
 			puts "Invalid input, only '1' and '2' are accepted"
 			display_menu
@@ -47,6 +40,19 @@ class GameMenu
 		return hangman
 	end
 
+	private def process_load_request
+		puts "Please write the name of your saved game"	
+
+		hangman = nil
+		loop do
+			saved_game_name = gets.chomp
+			hangman = SavesManager.load_game(saved_game_name)
+			break if hangman != nil
+			puts "Save not found! Please try again."
+		end 
+
+		return hangman
+	end
 	private def prompt_for_menu_choice
 		gets.chomp.to_i
 	end
