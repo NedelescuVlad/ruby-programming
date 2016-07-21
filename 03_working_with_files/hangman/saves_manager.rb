@@ -13,7 +13,12 @@ class SavesManager
 	end
 
 	def self.load_game(game_name)	
-		hangman_object = YAML.load_file(get_save_path(game_name))	
+		if File.exists? (get_save_path(game_name))
+			hangman_object = YAML.load_file(get_save_path(game_name))	
+			return hangman_object
+		else
+			return nil
+		end
 	end
 
 	def self.get_save_path(game_name)

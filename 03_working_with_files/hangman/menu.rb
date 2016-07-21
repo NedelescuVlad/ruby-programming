@@ -32,9 +32,13 @@ class GameMenu
 		if user_choice == OPTION[:NEW_GAME]
 			hangman = Hangman.new
 		elsif user_choice == OPTION[:LOAD_GAME]
-			puts "Saved game name:"	
-			saved_game_name = gets.chomp
-			hangman = SavesManager.load_game(saved_game_name)
+			puts "Please write the name of your saved game"	
+			loop do
+				saved_game_name = gets.chomp
+				hangman = SavesManager.load_game(saved_game_name)
+				break if hangman != nil
+				puts "Save not found! Please try again."
+			end 
 		else
 			puts "Invalid input, only '1' and '2' are accepted"
 			display_menu

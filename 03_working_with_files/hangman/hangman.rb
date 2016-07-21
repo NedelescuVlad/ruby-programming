@@ -16,8 +16,11 @@ class Hangman
 			@guessed_letters << user_input
 		elsif user_input.length > 1
 			if user_input == @selected_word 
-				exit(winning_message)
+				puts winning_message
+				exit()
 			else
+				puts "Oh! you've tried guessing the whole word."
+				puts "...but #{user_input} is not the droid we are looking for."
 				abort(losing_message)
 			end
 
@@ -39,7 +42,7 @@ class Hangman
 		@made_guesses < MAX_GUESSES
 	end
 	
-	# returns the playet's progress in guessing the word
+	# returns the player's progress in guessing the word
 	def get_guessed_word
 		guessed_word = ""
 
@@ -58,11 +61,11 @@ class Hangman
 	end
 
 	def winning_message
-		"Congratulations! You have correctly guessed: #{get_guessed_word}"
+		"Congratulations! You have correctly guessed: #{@selected_word}"
 	end
 
 	def losing_message
-		"Game over! Your guess was: #{get_guessed_word}\nThe sought word was: #{selected_word}"
+		"Game over! Please play again!"
 	end
 
 	private def select_word_from_file
