@@ -1,25 +1,47 @@
+require 'yaml'
 require_relative 'hangman'
+require_relative 'saves_manager'
 
-# Class for handling input/output interaction with the hangman player
+# Class for handling hangman gameplay and user interaction
 class GameManager
+
+	SAVE_COMMAND = "save_game"
+
 	def initialize(hangman)
-		@hangman = hangman
+		@hangman = hangman 
 	end
 
 	def start_game
+
+		display_game_instructions()
 		while (@hangman.user_has_guesses? && !@hangman.user_guessed_correctly?) 
 			
-			@hangman.increment_made_guesses
-
-			print_guessed_word
-			print_remaining_guesses
-			user_input = prompt_for_input
-			@hangman.parse_input(user_input)
+			print_guessed_word()
+			print_remaining_guesses()
+			user_input = prompt_for_input()
+			if user_input == SAVE_COMMAND
+				process_save_command
+			else
+				@hangman.process_guess(user_input)
+				@hangman.increment_made_guesses()
+			end
 
 			puts ""
 		end
 
-		print_outcome
+		print_outcome()
+	end
+
+	private def display_game_instructions
+		puts "[NOTE] Write '#{SAVE_COMMAND}' at any time to abort the game and save your progress"
+		puts "[NOTE] Your saves can be found in the '#{SavesManager::SAVES_DIR}' directory under the root of this program"
+	end
+
+	private def process_save_command
+		puts "Save game as: "
+		save_name = gets.chomp
+		SavesManager.save_game(@hangman, save_name)
+
 	end
 
 	private def prompt_for_input
@@ -46,21 +68,10 @@ class GameManager
 
 	private def print_outcome
 		if @hangman.user_guessed_correctly?
-			puts winning_message
+			puts @hangman.winning_message
 		else
-			puts losing_message	
+			puts @hangman.losing_message	
 		end
 	end
 
-	private def winning_message
-		"Congratulations! You have correctly guessed: #{@hangman.get_guessed_word}"
-	end
-
-	private def losing_message
-		"Game over! Your guess was: #{@hangman.get_guessed_word}\nThe sought word was: #{@hangman.selected_word}"
-	end
-
 end
-
-game_manager = GameManager.new(Hangman.new)
-game_manager.start_game

@@ -1,0 +1,4 @@
+--- !ruby/object:Hangman
+selected_word: dissimilar
+guessed_letters: []
+made_guesses: 0

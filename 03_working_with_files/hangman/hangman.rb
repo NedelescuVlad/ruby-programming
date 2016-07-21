@@ -11,14 +11,14 @@ class Hangman
 		@made_guesses = 0
 	end	
 
-	def parse_input(user_input)
-		if user_input.length == 1
+	def process_guess(user_input)
+		if user_input.length == 1  && !@guessed_letters.include?(user_input)
 			@guessed_letters << user_input
 		elsif user_input.length > 1
 			if user_input == @selected_word 
-				exit(get_winning_message)
+				exit(winning_message)
 			else
-				abort(get_losing_message)
+				abort(losing_message)
 			end
 
 		else
@@ -38,7 +38,8 @@ class Hangman
 	def user_has_guesses?
 		@made_guesses < MAX_GUESSES
 	end
-
+	
+	# returns the playet's progress in guessing the word
 	def get_guessed_word
 		guessed_word = ""
 
@@ -53,7 +54,15 @@ class Hangman
 	end
 
 	def get_remaining_guesses
-		MAX_GUESSES - @made_guesses + 1
+		MAX_GUESSES - @made_guesses 
+	end
+
+	def winning_message
+		"Congratulations! You have correctly guessed: #{get_guessed_word}"
+	end
+
+	def losing_message
+		"Game over! Your guess was: #{get_guessed_word}\nThe sought word was: #{selected_word}"
 	end
 
 	private def select_word_from_file
