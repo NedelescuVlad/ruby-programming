@@ -67,14 +67,21 @@ class LinkedList
 				working_node = working_node.next
 			end
 
-			@size -= 1
-
 			return working_node
 		end	
 	end
 
 	def at(index)
-		
+		curr_index = 0
+			
+		working_node = @head
+		while working_node != nil
+			if curr_index == index
+				return working_node
+			end
+			working_node = working_node.next
+			curr_index += 1
+		end	
 	end
 	
 	def pop
@@ -83,19 +90,20 @@ class LinkedList
 		elsif @size == 1
 			@head = nil
 			@size = 0
-		else
-			working_node = @head
-			while working_node.next != nil
 
-				prev = working_node
-				working_node = working_node.next
-				if working_node.next == nil
-					prev.next = nil
-					size -= 1
-					return
-				end
-			end
+			return
 		end
+
+		prev = @head
+		curr = @head.next
+
+		while curr != nil
+			prev = curr
+			curr = curr.next
+		end
+
+		prev.setNext(nil)
+		@size -= 1
 	end
 
 	def contains?(value)
@@ -114,24 +122,104 @@ class LinkedList
 	end
 
 	def find(data)
+		index = 0
+
+		working_node = @head
+		while working_node != nil
+			if working_node.value == data
+				return index
+			else
+				index += 1
+				working_node = working_node.next
+			end
+		end
+
+		return nil
 	end
 
 	def to_s
+		working_node = @head
+
+		result = String.new 
+		while working_node != nil
+			result << "#{working_node.value}->"
+			working_node = working_node.next
+		end
+		result << "nil"
+		
+		return result
 	end
 
-	def insert_at(index)
+	# Needs fixing for index 0
+	def insert_at(data, index)
+		n = Node.new(data, nil)
+
+		if @size == 0 
+			if index == 0
+				@head = n
+				size += 1
+			end
+			return
+		end
+
+		curr_index = 0
+
+		aux_node = Node.new(0, @head)
+
+		prev = aux_node
+		curr = aux_node.next
+		while curr != nil
+			if curr_index == index
+				prev.setNext(n)
+				n.setNext(curr)
+				return
+			end
+
+			curr_index += 1
+			prev = curr
+			curr = curr.next
+			@size += 1
+		end
 	end
 
 	def remove_at(index)
+		if @size == 0 || index < 0
+			return
+		end
+			
+		if @size == 1 
+			if index == 0
+				@head = nil
+				@size = 0
+			end
+			return
+		end
+
+		curr_index = 1
+		prev = @head
+		curr = @head.next
+		while curr != nil
+			if curr_index == index
+				prev.setNext(curr.next)
+				@size -= 1
+				return
+			end
+
+			prev = curr
+			curr = curr.next
+			curr_index += 1
+		end
+
 	end
 end
 
 linked_list = LinkedList.new
 linked_list.append(Node.new(1))
 puts linked_list.tail.value
-linked_list.prepend(Node.new(3))
-puts linked_list.head.value
+linked_list.append(Node.new(3))
+puts linked_list.tail.value
 linked_list.append(Node.new(5))
-puts linked_list.tail.value
-linked_list.pop
-puts linked_list.tail.value
+puts linked_list.to_s
+linked_list.insert_at(8, 1)
+puts linked_list
+linked_list.remove_at(1)
