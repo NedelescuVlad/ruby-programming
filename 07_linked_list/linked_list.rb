@@ -150,36 +150,41 @@ class LinkedList
 		return result
 	end
 
-	# Needs fixing for index 0
-	def insert_at(data, index)
+	def insert_at(index, data)
+		return if index < 0 || index > size
+
 		n = Node.new(data, nil)
 
-		if @size == 0 
-			if index == 0
-				@head = n
-				size += 1
-			end
+		if index == 0
+			@size += 1
+
+			n.setNext(@head)
+			@head = n
+
 			return
 		end
 
-		curr_index = 0
+		curr_index = 1
+		curr_node  = @head
+		next_node = @head.next
 
-		aux_node = Node.new(0, @head)
+		while curr_node != nil
 
-		prev = aux_node
-		curr = aux_node.next
-		while curr != nil
 			if curr_index == index
-				prev.setNext(n)
-				n.setNext(curr)
+				@size += 1
+
+				curr_node.setNext(n)
+				n.setNext(next_node)
+
 				return
 			end
 
 			curr_index += 1
-			prev = curr
-			curr = curr.next
-			@size += 1
+
+			curr_node = next_node
+			next_node = next_node.next
 		end
+
 	end
 
 	def remove_at(index)
@@ -220,6 +225,6 @@ linked_list.append(Node.new(3))
 puts linked_list.tail.value
 linked_list.append(Node.new(5))
 puts linked_list.to_s
-linked_list.insert_at(8, 1)
+linked_list.insert_at(8, 0)
 puts linked_list
 linked_list.remove_at(1)
