@@ -28,12 +28,12 @@ class LinkedList
 		if @size == 0
 			@head = n
 		else
-			working_node = @head
-			while working_node.next != nil
-				working_node = working_node.next
+			curr_node = @head
+			while curr_node.next != nil
+				curr_node = curr_node.next
 			end
 
-			working_node.setNext(n)
+			curr_node.setNext(n)
 		end
 
 		@size += 1
@@ -62,24 +62,24 @@ class LinkedList
 		if @size == 0
 			return @head
 		else
-			working_node = @head
-			while working_node.next != nil				
-				working_node = working_node.next
+			curr_node = @head
+			while curr_node.next != nil				
+				curr_node = curr_node.next
 			end
 
-			return working_node
+			return curr_node
 		end	
 	end
 
 	def at(index)
 		curr_index = 0
 			
-		working_node = @head
-		while working_node != nil
+		curr_node = @head
+		while curr_node != nil
 			if curr_index == index
-				return working_node
+				return curr_node
 			end
-			working_node = working_node.next
+			curr_node = curr_node.next
 			curr_index += 1
 		end	
 	end
@@ -110,12 +110,12 @@ class LinkedList
 		if @size == 0 
 			return false
 		else
-			working_node = @head
-			while @working_node.next != nil
-				if working_node.value == value || working_node.next == value
+			curr_node = @head
+			while curr_node.next != nil
+				if curr_node.value == value || curr_node.next == value
 					return true
 				end
-				working_node = working_node.next
+				curr_node = curr_node.next
 			end
 		end
 		return false
@@ -124,13 +124,13 @@ class LinkedList
 	def find(data)
 		index = 0
 
-		working_node = @head
-		while working_node != nil
-			if working_node.value == data
+		curr_node = @head
+		while curr_node != nil
+			if curr_node.value == data
 				return index
 			else
 				index += 1
-				working_node = working_node.next
+				curr_node = curr_node.next
 			end
 		end
 
@@ -138,12 +138,12 @@ class LinkedList
 	end
 
 	def to_s
-		working_node = @head
+		curr_node = @head
 
 		result = String.new 
-		while working_node != nil
-			result << "#{working_node.value}->"
-			working_node = working_node.next
+		while curr_node != nil
+			result << "#{curr_node.value}->"
+			curr_node = curr_node.next
 		end
 		result << "nil"
 		
