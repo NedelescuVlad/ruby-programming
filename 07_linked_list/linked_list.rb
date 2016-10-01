@@ -85,25 +85,25 @@ class LinkedList
 	end
 	
 	def pop
-		if @size == 0
-			return
-		elsif @size == 1
+		if @size <= 1
 			@head = nil
 			@size = 0
-
-			return
 		end
 
-		prev = @head
-		curr = @head.next
+		curr_node = @head
 
-		while curr != nil
-			prev = curr
-			curr = curr.next
+		while curr_node != nil
+			if curr_node.next != nil && curr_node.next.next == nil
+				@size -= 1
+
+				curr_node.setNext(nil)
+
+				return
+			end
+
+			curr_node = curr_node.next
+
 		end
-
-		prev.setNext(nil)
-		@size -= 1
 	end
 
 	def contains?(value)
@@ -151,7 +151,7 @@ class LinkedList
 	end
 
 	def insert_at(index, data)
-		return if index < 0 || index > size
+		return if index < 0 || index > @size
 
 		n = Node.new(data, nil)
 
@@ -188,33 +188,36 @@ class LinkedList
 	end
 
 	def remove_at(index)
-		if @size == 0 || index < 0
-			return
-		end
-			
-		if @size == 1 
-			if index == 0
-				@head = nil
-				@size = 0
-			end
-			return
-		end
 
-		curr_index = 1
-		prev = @head
-		curr = @head.next
-		while curr != nil
-			if curr_index == index
-				prev.setNext(curr.next)
+		return if index < 0 || index > @size - 1 || @size == 0
+
+		if index == 0
+			if @size >= 1
 				@size -= 1
+				@head = @head.next
+			end
+
+			return
+		end	
+
+		curr_node = @head
+		next_node = @head.next
+		curr_index = 1
+
+		while next_node != nil
+			if curr_index == index
+				@size -= 1
+
+				curr_node.setNext(next_node.next)
+
 				return
 			end
 
-			prev = curr
-			curr = curr.next
 			curr_index += 1
-		end
 
+			curr_node = next_node
+			next_node = next_node.next
+		end
 	end
 end
 
@@ -225,6 +228,10 @@ linked_list.append(Node.new(3))
 puts linked_list.tail.value
 linked_list.append(Node.new(5))
 puts linked_list.to_s
-linked_list.insert_at(8, 0)
+linked_list.insert_at(0, 8)
 puts linked_list
-linked_list.remove_at(1)
+linked_list.pop
+puts linked_list
+linked_list.pop
+puts linked_list
+linked_list.pop
